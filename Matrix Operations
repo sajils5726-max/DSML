@@ -1,0 +1,72 @@
+import numpy as np
+A = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+B = np.array([[9, 8, 7], [6, 5, 4], [3, 2, 1]])
+print("Matrix A:\n", A)
+print("\nMatrix B:\n", B)
+
+add = A + B
+print("\nAddition of A and B:\n", add)
+
+sub = A - B
+print("\nSubtraction of A and B:\n", sub)
+
+mul = np.dot(A, B)
+print("\nMultiplication of A and B:\n", mul)
+
+element_mul = A * B
+print("\nElement-wise multiplication of A and B:\n", element_mul)
+
+transpose_A = A.T
+print("\nTranspose of matrix A:\n", transpose_A)
+
+det_A = np.linalg.det(A)
+print(f"\nDeterminant of matrix A: {det_A}")
+
+try:
+    inv_A = np.linalg.inv(A)
+    print("\nInverse of Matrix A:\n", inv_A)
+except np.linalg.LinAlgError:
+    
+    print("\nMatrix A is singular, inverse does not exist")
+
+------------------
+OUTPUT
+------------------
+Matrix A:
+ [[1 2 3]
+ [4 5 6]
+ [7 8 9]]
+
+Matrix B:
+ [[9 8 7]
+ [6 5 4]
+ [3 2 1]]
+
+Addition of A and B:
+ [[10 10 10]
+ [10 10 10]
+ [10 10 10]]
+
+Subtraction of A and B:
+ [[-8 -6 -4]
+ [-2  0  2]
+ [ 4  6  8]]
+
+Multiplication of A and B:
+ [[ 30  24  18]
+ [ 84  69  54]
+ [138 114  90]]
+
+Element-wise multiplication of A and B:
+ [[ 9 16 21]
+ [24 25 24]
+ [21 16  9]]
+
+Transpose of matrix A:
+ [[1 4 7]
+ [2 5 8]
+ [3 6 9]]
+
+Determinant of matrix A: 0.0
+
+Matrix A is singular, inverse does not exist
