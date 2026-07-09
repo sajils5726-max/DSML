@@ -1,0 +1,12 @@
+arr = np.array([10, 20, 30, 40, 50])
+
+print("First element:", arr[0])     
+print("Last element:", arr[-1])      
+print("Slicing [1:4]:", arr[1:4])  
+
+========================================
+OUTPUT
+========================================
+First element: 10
+Last element: 50
+Slicing [1:4]: [20 30 40]
