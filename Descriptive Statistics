@@ -1,0 +1,17 @@
+arr1 = np.array([5, 8, 10, 16, 20, 22, 30])
+
+print("Sum:", np.sum(arr1))
+print("Mean:", np.mean(arr1))
+print("Min:", np.min(arr1))
+print("Max:", np.max(arr1))
+print("Std Dev:", np.std(arr1))
+
+
+========================
+OUTPUT
+========================
+Sum: 111
+Mean: 15.857142857142858
+Min: 5
+Max: 30
+Std Dev: 8.184106049944289
