@@ -1,0 +1,19 @@
+print("\n" + "="*40 + "\nPANDAS DATAFRAME\n" + "="*40)
+data_dict = {
+    'Name': ['Alice', 'Bob', 'Charlie'],
+    'Age': [25, 30, 35],
+    'Salary': [50000, 60000, 70000]
+}
+df = pd.DataFrame(data_dict)
+
+print("Printed DataFrame (df):\n", df)
+
+
+========================================
+PANDAS DATAFRAME
+========================================
+Printed DataFrame (df):
+       Name  Age  Salary
+0    Alice   25   50000
+1      Bob   30   60000
+2  Charlie   35   70000
