@@ -1,0 +1,21 @@
+import pandas as pd
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model selection import train test split
+from sklearn. metrics import precision score,accuracy. score,fl score
+data=pd.read excel(food knn dataset.xlsx)
+print(data)
+x=data[IFeaturel', Feature21
+y=data/'Class]
+x _train, x_test,y_rain y_test=train_ test splin(x.y)
+knn=KNeighborsClassiier(n _neighbors=3)
+knn.fit(x train, y_train)
+y_ pred=knm.predict(x_test)
+accuracy-accuracy_ scorely_test,y_pred)
+print("accuracy.", accuracy)
+precision=precision score(y test, y pred, average='macro'; zero division=l)
+print("precision:" precision)
+fl=fl score(y test, y pred, average='macro', zero division=I)
+print("f1:", f1)
+new sample=pd.DataFrame([6, 411, columns=(Featurel'; Feature2I)
+new_ prediction=knn.predict(new sample)
+print("inTomato is a:", new prediction)
