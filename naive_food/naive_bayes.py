@@ -58,3 +58,33 @@ x_new = pd.DataFrame(
 y_new = gnb.predict(x_new)
 
 print("\nPredicted class for [6,4] (Tomato):", y_new[0])
+
+===============
+OUTPUT
+==============
+Dataset Loaded Successfully:
+
+    Feature1  Feature2      Class
+0         10         9      Fruit
+1          1         4    Protein
+2         10         1      Fruit
+3          7        10  Vegetable
+4          3        10  Vegetable
+5          1         1    Protein
+6          8         5      Fruit
+7          3         7  Vegetable
+8          3         6    Protein
+9          7         3      Fruit
+10         6         4      Fruit
+
+Actual values: <StringArray>
+['Protein', 'Fruit', 'Fruit', 'Fruit']
+Length: 4, dtype: str
+Predicted values: ['Protein' 'Vegetable' 'Fruit' 'Fruit']
+
+Model Evaluation Metrics:
+Accuracy: 0.75
+Precision: 0.67
+F1-score: 0.6
+
+Predicted class for [6,4] (Tomato): Fruit
