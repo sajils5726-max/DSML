@@ -11,3 +11,9 @@ model = LinearRegression().fit(X, y)
 print("Coefficient:", model.coef_[0])
 print("Intercept:", model.intercept_)
 print("Prediction for x=6:", model.predict([[6]])[0])
+
+============
+OUTPUT
+===========
+Coefficient: 0.6
+Prediction for x=6: 5.8
