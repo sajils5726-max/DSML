@@ -135,3 +135,25 @@ confidence = prediction[0][predicted_class] * 100
 
 print("Confidence:",
       confidence, "%")
+
+========
+OUTPUT
+=======
+Classes: ['setosa' 'versicolor' 'virginica']
+Training Accuracy: 93.33333373069763 %
+Test Accuracy: 96.66666388511658 %
+
+--------------------------------
+Enter Iris flower measurements
+--------------------------------
+Sepal length (cm): 5.1
+Sepal width (cm): 3.5
+Petal length (cm): 1.4
+Petal width (cm): 0.2
+1/1 ━━━━━━━━━━━━━━━━━━━━ 0s 67ms/step
+
+Prediction probabilities:
+[[9.9496657e-01 5.0290530e-03 4.4469884e-06]]
+
+Predicted Iris species: setosa
+Confidence: 99.49666 %
