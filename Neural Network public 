@@ -1,0 +1,29 @@
+import tensorflow as tf
+from tensorflow.keras import layers, models
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
+
+data = pd.read_excel('simple_cnn_dataset.xlsx')
+X = data.drop('Label', axis=1).values
+y = LabelEncoder().fit_transform(data['Label'])
+
+X = X.reshape(-1, 4, 4, 1)
+
+x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+
+model = models.Sequential([
+    layers.Conv2D(4, (2, 2), activation='relu', input_shape=(4, 4, 1)),
+    layers.Flatten(),
+    layers.Dense(4, activation='relu'),
+    layers.Dense(1, activation='sigmoid')
+])
+
+model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
+model.fit(x_train, y_train, epochs=10, verbose=0)
+
+loss, acc = model.evaluate(x_test, y_test, verbose=0)
+print(f"\nTest Accuracy: {acc:.2f}")
+
+pred = model.predict(x_test[:1])
+print("Predicted Class:", "Bright" if pred[0][0] > 0.5 else "Dark")
