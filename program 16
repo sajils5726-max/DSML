@@ -1,0 +1,183 @@
+ XML 
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center" android:layout_height="match_parent" android:layout_width="match_parent" android:orientation="vertical" tools:context=".MainActivity" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView android:layout_gravity="center" android:layout_height="wrap_content" android:layout_marginTop="50dp" android:layout_width="wrap_content" android:text="Database Operations" android:textSize="25sp" android:textStyle="bold"/>
+
+    <EditText android:hint="Roll no" android:id="@+id/rollno" android:layout_height="wrap_content" android:layout_marginHorizontal="20dp" android:layout_marginTop="30dp" android:layout_width="match_parent"/>
+
+    <EditText android:hint="Name" android:id="@+id/name" android:layout_height="wrap_content" android:layout_marginHorizontal="20dp" android:layout_marginTop="10dp" android:layout_width="match_parent"/>
+
+    <EditText android:hint="Email ID" android:id="@+id/email" android:layout_height="wrap_content" android:layout_marginHorizontal="20dp" android:layout_marginTop="10dp" android:layout_width="match_parent"/>
+
+    <Button android:backgroundTint="#8BC34A" android:id="@+id/insert_btn" android:layout_gravity="center" android:layout_height="wrap_content" android:layout_marginTop="30dp" android:layout_width="286dp" android:text="Insert into table"/>
+
+    <Button android:backgroundTint="#8BC34A" android:id="@+id/select_btn" android:layout_gravity="center" android:layout_height="wrap_content" android:layout_marginTop="30dp" android:layout_width="286dp" android:text="View from table"/>
+
+</LinearLayout>
+
+
+
+JAVA
+
+package com.example.sqlite;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import android.database.Cursor;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+    EditText rollno, name, email;
+    Button insert_btn, select_btn;
+    dhelpher db;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        rollno = findViewById(R.id.rollno);
+        name = findViewById(R.id.name);
+        email = findViewById(R.id.email);
+        insert_btn = findViewById(R.id.insert_btn);
+        select_btn = findViewById(R.id.select_btn);
+
+        db = new dhelpher(getApplicationContext());
+
+        insert_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int rollno_num = Integer.parseInt(rollno.getText().toString());
+                String name_txt = name.getText().toString();
+                String email_txt = email.getText().toString();
+
+                boolean insert_result = db.insertToDB(rollno_num, name_txt, email_txt);
+                if (insert_result) {
+                    Toast.makeText(getApplicationContext(), "Inserted successfully.", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Insertion failed!!", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        select_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Cursor res = db.selectFromDB();
+                if (res.getCount() == 0) {
+                    Toast.makeText(getApplicationContext(), "No entry Exist", Toast.LENGTH_LONG).show();
+                } else {
+                    StringBuffer buffer = new StringBuffer();
+                    while (res.moveToNext()) {
+                        buffer.append("rollno:" + res.getString(0) + "\n");
+                        buffer.append("Name:" + res.getString(1) + "\n");
+                        buffer.append("email:" + res.getString(2) + "\n\n");
+                    }
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setCancelable(true);
+                    builder.setTitle("User Entries");
+                    builder.setMessage(buffer.toString());
+                    builder.show();
+                }
+            }
+        });
+    }
+}
+
+
+
+
+
+DBhelpher.java
+
+
+
+package com.example.sqlite;
+
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import androidx.annotation.Nullable;
+
+public class dhelpher extends SQLiteOpenHelper {
+
+    public dhelpher(@Nullable Context context) {
+        super(context, "MyDB", null, 1);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase sqliteDatabase) {
+        sqliteDatabase.execSQL("CREATE TABLE userdetails (rollno INTEGER PRIMARY KEY, name TEXT, email TEXT)");
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+        sqLiteDatabase.execSQL("Drop table if exists userdetails");
+    }
+
+    public boolean insertToDB(int rollno, String name, String email) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("rollno", rollno);
+        values.put("name", name);
+        values.put("email", email);
+
+        long result = db.insert("userdetails", null, values);
+        if (result >= 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public Cursor selectFromDB() {
+        SQLiteDatabase DB = this.getWritableDatabase();
+        Cursor cursor = DB.rawQuery("Select * from userdetails", null);
+        return cursor;
+    }
+
+    public boolean updateToDB(int rollno, String name, String email) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("name", name);
+        values.put("email", email);
+
+        Cursor check_user = db.rawQuery("SELECT * from userdetails WHERE rollno=?", new String[]{String.valueOf(rollno)});
+        if (check_user.getCount() > 0) {
+            long update_user_query = db.update("userdetails", values, "rollno=?", new String[]{String.valueOf(rollno)});
+            if (update_user_query >= 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public boolean deleteFromDB(int rollno) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor check_user = db.rawQuery("SELECT * FROM userdetails WHERE rollno=?", new String[]{String.valueOf(rollno)});
+        if (check_user.getCount() > 0) {
+            long delete_user_query = db.delete("userdetails", "rollno=?", new String[]{String.valueOf(rollno)});
+            if (delete_user_query >= 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+}
+
